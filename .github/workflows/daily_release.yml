@@ -2,7 +2,8 @@ name: Daily Release
 
 on:
   schedule:
-    - cron: "31 22 * * *"
+    # * is a special character in YAML so you have to quote this string
+    - cron: "30,35,40,45,50 * * * *"
 
 jobs:
   build:
