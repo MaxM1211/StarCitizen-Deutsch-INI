@@ -1,28 +1,9 @@
-name: Daily Release
-
 on:
   schedule:
-    # * is a special character in YAML so you have to quote this string
-    - cron: "30,35,40,45,50 * * * *"
-
+    - cron: "50,55,0 * * * *"
 jobs:
-  build:
+  test_schedule:
     runs-on: ubuntu-latest
-
     steps:
-      - name: Checkout Repository
-        uses: actions/checkout@v2
-
-      - name: Create Release Zip
-        run: |
-          mkdir LIVE
-          cp user.cfg LIVE/
-          mkdir -p LIVE/data/Localization/german_(germany)
-          cp data/Localization/german_(germany)/global.ini LIVE/data/Localization/german_(germany)/
-          zip -r StarCitizen.Deutsch.zip LIVE/*
-
-      - name: Upload Release
-        uses: actions/upload-artifact@v2
-        with:
-          name: daily-release
-          path: StarCitizen.Deutsch.zip
+      - name: Echo
+        run: echo "This step will always run"
