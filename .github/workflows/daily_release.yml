@@ -1,6 +1,8 @@
+name: Test cron
+
 on:
   schedule:
-    - cron: "50,55,0 * * * *"
+    - cron: "0 3,5 * * *"
 jobs:
   test_schedule:
     runs-on: ubuntu-latest
