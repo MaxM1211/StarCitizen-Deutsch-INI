@@ -18,6 +18,18 @@ jobs:
 
       - name: Checkout code
         uses: actions/checkout@v2
+
+      - name: Create Release zip
+        run: |
+          mkdir release
+          cp "live/user.cfg" "release"
+          mkdir -p "release/data/Localization/german_(germany)"
+          cp "live/global.ini" "release/data/Localization/german_(germany)/"
+          cd release
+          echo "${{ vars.VERSION_FILE_TEXT }} $(date '+%d.%m.%y - %H:%M Uhr')" >> Versionstext.txt
+          mv Versionstext.txt Version-$(date "+%d.%m.%y-%H.%M").txt
+          zip -r "../my-artifact.zip" *
+
       - name: Create Release
         id: create_release
         uses: actions/create-release@v1
@@ -30,17 +42,6 @@ jobs:
             Lies die [ReadMe](https://github.com/rjcncpt/StarCitizen-Deutsch-INI/blob/main/README.md) für mehr Informationen.
           draft: false
           prerelease: false
-
-      - name: Create Release zip
-        run: |
-          mkdir release
-          cp "live/user.cfg" "release"
-          mkdir -p "release/data/Localization/german_(germany)"
-          cp "live/global.ini" "release/data/Localization/german_(germany)/"
-          cd release
-          echo "${{ vars.VERSION_FILE_TEXT }} $(date '+%d.%m.%y - %H:%M Uhr')" >> Versionstext.txt
-          mv Versionstext.txt Version-$(date "+%d.%m.%y-%H.%M").txt
-          zip -r "../my-artifact.zip" *
 
       - name: Upload Release zip
         uses: actions/upload-release-asset@v1
