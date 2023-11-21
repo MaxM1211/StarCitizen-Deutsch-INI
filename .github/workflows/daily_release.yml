@@ -2,10 +2,10 @@ name: Test cron
 
 on:
   schedule:
-    - cron: "0 3,5 * * *"
+    - cron: "0,30 * * * *"
 jobs:
   test_schedule:
     runs-on: ubuntu-latest
     steps:
-      - name: Echo
-        run: echo "This step will always run"
+      - name: Echo date
+        run: date "+%H:%M:%S   %d/%m/%y"
