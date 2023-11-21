@@ -12,6 +12,8 @@ jobs:
   build:
     name: Create Release
     runs-on: ubuntu-latest
+    permissions:
+      contents: write
     steps:
       - name: Echo date start
         run: date "+%H:%M:%S   %d/%m/%y"
@@ -28,30 +30,38 @@ jobs:
           cd release
           echo "${{ vars.VERSION_FILE_TEXT }} $(date '+%d.%m.%y - %H:%M Uhr')" >> Versionstext.txt
           mv Versionstext.txt Version-$(date "+%d.%m.%y-%H.%M").txt
-          zip -r "../my-artifact.zip" *
-
-      - name: Create Release
-        id: create_release
-        uses: actions/create-release@v1
-        env:
-          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }} # This token is provided by Actions, you do not need to create your own token
+          zip -r "../${{ vars.ZIP_NAME_LIVE }}" *
+      - name: Create Release New
+        uses: ncipollo/release-action@v1
         with:
-          tag_name: ${{ github.run_number }}
-          release_name: ${{ vars.RELEASE_TITLE_LIVE }}
-          body: |
-            Lies die [ReadMe](https://github.com/rjcncpt/StarCitizen-Deutsch-INI/blob/main/README.md) für mehr Informationen.
-          draft: false
-          prerelease: false
+          artifacts: "${{ vars.ZIP_NAME_LIVE }}" #"release.tar.gz,foo/*.txt"
+          body: "Lies die [ReadMe](https://github.com/rjcncpt/StarCitizen-Deutsch-INI/blob/main/README.md) für mehr Informationen."
+          tag: ${{ github.run_number }}
+          commit: main
 
-      - name: Upload Release zip
-        uses: actions/upload-release-asset@v1
-        env:
-          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
-        with:
-          upload_url: ${{steps.create_release.outputs.upload_url}}
-          asset_path: ./my-artifact.zip
-          asset_name: ${{ vars.ZIP_NAME_LIVE }}
-          asset_content_type: application/zip
+
+      #   - name: Create Release Old
+      #     id: create_release
+      #     uses: actions/create-release@v1
+      #     env:
+      #       GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }} # This token is provided by Actions, you do not need to create your own token
+      #     with:
+      #       tag_name: ${{ github.run_number }}
+      #       release_name: ${{ vars.RELEASE_TITLE_LIVE }}
+      #       body: |
+      #         Lies die [ReadMe](https://github.com/rjcncpt/StarCitizen-Deutsch-INI/blob/main/README.md) für mehr Informationen.
+      #       draft: false
+      #       prerelease: false
+
+      #   - name: Upload Release zip
+      #     uses: actions/upload-release-asset@v1
+      #     env:
+      #       GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+      #     with:
+      #       upload_url: ${{steps.create_release.outputs.upload_url}}
+      #       asset_path: ./my-artifact.zip
+      #       asset_name: ${{ vars.ZIP_NAME_LIVE }}
+      #       asset_content_type: application/zip
 
       - name: Echo date ende
         run: date "+%H:%M:%S   %d/%m/%y"
