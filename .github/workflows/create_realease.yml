@@ -38,9 +38,7 @@ jobs:
           mkdir -p "release/data/Localization/german_(germany)"
           cp "live/global.ini" "release/data/Localization/german_(germany)/"
           cd release
-          echo "${{ vars.VERSION_FILE_TEXT }}" >> Versionstext.txt
-          echo "" >> Versionstext.txt
-          echo "Übersetzungs Version: $(date '+%d.%m.%y - %H:%M Uhr')" >> Versionstext.txt
+          echo "${{ vars.VERSION_FILE_TEXT }} $(date '+%d.%m.%y - %H:%M Uhr')" >> Versionstext.txt
           mv Versionstext.txt Version-$(date "+%d.%m.%y-%H.%M").txt
           zip -r "../my-artifact.zip" *
 
