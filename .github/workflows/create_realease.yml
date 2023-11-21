@@ -34,9 +34,9 @@ jobs:
       - name: Create Release zip
         run: |
           mkdir release
-          cp live/user.cfg release
-          mkdir -p release/data/Localization/german_(germany)
-          cp live/global.ini release/data/Localization/german_(germany)/
+          cp "live/user.cfg" "release"
+          mkdir -p "release/data/Localization/german_(germany)"
+          cp "live/global.ini" "release/data/Localization/german_(germany)/"
           
 
       - name: Upload Release zip
