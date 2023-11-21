@@ -1,40 +1,32 @@
-# https://docs.github.com/en/actions
-
-name: "Release"
-
-on: # yamllint disable-line rule:truthy
+on:
   push:
+    # Sequence of patterns matched against refs/tags
     tags:
-      - "**"
+      - "v*" # Push events to matching v*, i.e. v1.0, v20.15.10
+
+  schedule:
+    - cron: "0,30 * * * *"
+
+name: Create Release
 
 jobs:
-  release:
-    name: "Release"
-
-    runs-on: "ubuntu-latest"
-
+  build:
+    name: Create Release
+    runs-on: ubuntu-latest
     steps:
-      - name: "Determine tag"
-        run: 'echo "RELEASE_TAG=${GITHUB_REF#refs/tags/}" >> $GITHUB_ENV'
-
-      - name: "Create release"
-        uses: "actions/github-script@v6"
+      - name: Checkout code
+        uses: actions/checkout@v2
+      - name: Create Release
+        id: create_release
+        uses: actions/create-release@v1
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }} # This token is provided by Actions, you do not need to create your own token
         with:
-          github-token: "${{ secrets.GITHUB_TOKEN }}"
-          script: |
-            try {
-              const response = await github.rest.repos.createRelease({
-                draft: false,
-                generate_release_notes: true,
-                name: process.env.RELEASE_TAG,
-                owner: context.repo.owner,
-                prerelease: false,
-                repo: context.repo.repo,
-                tag_name: process.env.RELEASE_TAG,
-              });
-
-              core.exportVariable('RELEASE_ID', response.data.id);
-              core.exportVariable('RELEASE_UPLOAD_URL', response.data.upload_url);
-            } catch (error) {
-              core.setFailed(error.message);
-            }
+          tag_name: ${{ github.ref }}
+          release_name: Release ${{ github.ref }}
+          body: |
+            Lies die [ReadMe](https://github.com/rjcncpt/StarCitizen-Deutsch-INI/blob/main/README.md) für mehr Informationen.
+          draft: false
+          prerelease: false
+      - name: Echo Test
+        run: echo ${{ vars.MAJOR }}
