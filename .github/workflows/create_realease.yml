@@ -38,7 +38,14 @@ jobs:
           mkdir -p "release/data/Localization/german_(germany)"
           cp "live/global.ini" "release/data/Localization/german_(germany)/"
           cd release
-          echo "Deutsche Star Citizen Übersetzung\n\nDiese Übersetzungsdatei ist ein Community Projekt und wird ständig weiterentwickelt.\nFür Updates, besuche das GitHub Repository: https://github.com/rjcncpt/StarCitizen-Deutsch-INI\n\n" >> Versionstext.txt
+          echo "Deutsche Star Citizen Übersetzung" >> Versionstext.txt
+          echo "" >> Versionstext.txt
+          echo "Diese Übersetzungsdatei ist ein Community Projekt und wird ständig weiterentwickelt." >> Versionstext.txt
+          echo "Für Updates, besuche das GitHub Repository: https://github.com/rjcncpt/StarCitizen-Deutsch-INI" >> Versionstext.txt
+          echo "" >> Versionstext.txt
+          echo "Version: $(date '+%d.%m.%y - %H:%M Uhr')" >> Versionstext.txt
+          date "+%d/%m/%y - %H:%MUhr" >> Versionstext.txt
+          mv Versionstext.txt Version-$(date "+%d.%m.%y-%H.%M").txt
           zip -r "../my-artifact.zip" *
 
       - name: Upload Release zip
