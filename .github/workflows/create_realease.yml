@@ -23,6 +23,7 @@ jobs:
 
       - name: Create Release zip
         run: |
+          sudo timedatectl set-timezone Europe/Berlin
           mkdir release
           cp "live/user.cfg" "release"
           mkdir -p "release/data/Localization/german_(germany)"
