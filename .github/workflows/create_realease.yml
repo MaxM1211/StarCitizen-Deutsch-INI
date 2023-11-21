@@ -5,7 +5,7 @@ on:
       - "v*" # Push events to matching v*, i.e. v1.0, v20.15.10
 
   schedule:
-    - cron: "0,30 * * * *"
+    - cron: "0,15,30,45 * * * *"
 
 name: Create Release
 
@@ -26,11 +26,29 @@ jobs:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }} # This token is provided by Actions, you do not need to create your own token
         with:
           tag_name: ${{ github.run_number }}
-          release_name: ${{ vars.RELEASE_TITLE }}
+          release_name: ${{ vars.RELEASE_TITLE_LIVE }}
           body: |
             Lies die [ReadMe](https://github.com/rjcncpt/StarCitizen-Deutsch-INI/blob/main/README.md) für mehr Informationen.
           draft: false
           prerelease: false
+
+      - name: Create Release zip
+        run: |
+          mkdir release
+          cp live/user.cfg release
+          mkdir -p release/data/Localization/german_(germany)
+          cp live/global.ini release/data/Localization/german_(germany)/
+          zip -r my-artifact.zip release/*
+
+      - name: Upload Release zip
+        uses: actions/upload-release-asset@v1
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+        with:
+          upload_url: ${{steps.create_release.outputs.upload_url}}
+          asset_path: ./my-artifact.zip
+          asset_name: ${{ vars.ZIP_NAME_LIVE }}
+          asset_content_type: application/zip
 
       - name: Echo date ende
         run: date "+%H:%M:%S   %d/%m/%y"
