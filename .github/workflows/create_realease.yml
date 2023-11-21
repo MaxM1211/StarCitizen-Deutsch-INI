@@ -37,7 +37,8 @@ jobs:
           cp "live/user.cfg" "release"
           mkdir -p "release/data/Localization/german_(germany)"
           cp "live/global.ini" "release/data/Localization/german_(germany)/"
-          zip -r my-artifact.zip release
+          cd release
+          zip -r "../my-artifact.zip" *
 
       - name: Upload Release zip
         uses: actions/upload-release-asset@v1
