@@ -31,12 +31,12 @@ jobs:
 
       - name:
         id: date
-        run: echo $(date '+%d.%m.%Y') >> $GITHUB_OUTPUT
+        run: echo "date=$(date '+%d.%m.%Y')" >> $GITHUB_OUTPUT
 
       - name: Create Release New
         uses: ncipollo/release-action@v1
         with:
-          tag: v${{steps.date.outputs.GITHUB_OUTPUT}}
+          tag: v${{ steps.date.outputs.date }}
           commit: main
           name: ${{ vars.RELEASE_TITLE_LIVE }}
           body: ${{ vars.RELEASE_BODY_LIVE }}
