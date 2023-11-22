@@ -36,7 +36,7 @@ jobs:
       - name: Create Release New
         uses: ncipollo/release-action@v1
         with:
-          tag: ${{ steps.date.outputs.date }}
+          tag: ${{ github.run_number }} # ${{ steps.date.outputs.date }}
           commit: main
           name: ${{ vars.RELEASE_TITLE_LIVE }}
           body: ${{ vars.RELEASE_BODY_LIVE }}
