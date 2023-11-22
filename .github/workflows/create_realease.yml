@@ -1,4 +1,7 @@
 on:
+  push:
+    branches: main
+
   schedule:
     - cron: "0 3 * * *"
 
@@ -29,8 +32,8 @@ jobs:
       - name: Create Release New
         uses: ncipollo/release-action@v1
         with:
-          tag: ${{ github.run_number }}
+          tag: v$(date "+%d.%m.%Y")
           commit: main
           name: ${{ vars.RELEASE_TITLE_LIVE }}
-          body: ${{ vars.RELEASE_BODY }}
+          body: ${{ vars.RELEASE_BODY_LIVE }}
           artifacts: ${{ vars.ZIP_NAME_LIVE }}
