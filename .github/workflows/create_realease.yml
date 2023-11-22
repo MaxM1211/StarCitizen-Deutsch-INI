@@ -29,10 +29,14 @@ jobs:
           mv Versionstext.txt Version-$(date "+%d.%m.%y-%H.%M").txt
           zip -r "../${{ vars.ZIP_NAME_LIVE }}" *
 
+      - name:
+        id: date
+        run: echo $(date "+%d.%m.%Y")
+
       - name: Create Release New
         uses: ncipollo/release-action@v1
         with:
-          tag: v$(date "+%d.%m.%Y")
+          tag: v${{steps.date.outputs}}
           commit: main
           name: ${{ vars.RELEASE_TITLE_LIVE }}
           body: ${{ vars.RELEASE_BODY_LIVE }}
