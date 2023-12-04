@@ -1,12 +1,14 @@
 on:
-  schedule:
-    - cron: "0 3 * * *"
+  push:
+    branches: "main"
+  # schedule:
+  #   - cron: "0 3 * * *"
 
 name: Create Release
 
 jobs:
-  build:
-    name: Create Release
+  live_release:
+    name: Create Live Release
     runs-on: ubuntu-latest
     permissions:
       contents: write
@@ -22,7 +24,7 @@ jobs:
           mkdir -p "release/data/Localization/german_(germany)"
           cp "live/global.ini" "release/data/Localization/german_(germany)/"
           cd release
-          echo "${{ vars.VERSION_FILE_TEXT }} $(date '+%d.%m.%y - %H:%M Uhr')" >> Versionstext.txt
+          echo "${{ vars.VERSION_FILE_TEXT_LIVE }} $(date '+%d.%m.%y - %H:%M Uhr')" >> Versionstext.txt
           mv Versionstext.txt Version-$(date "+%d.%m.%y-%H.%M").txt
           zip -r "../${{ vars.ZIP_NAME_LIVE }}" *
 
@@ -38,3 +40,39 @@ jobs:
           name: ${{ vars.RELEASE_TITLE_LIVE }}
           body: ${{ vars.RELEASE_BODY_LIVE }}
           artifacts: ${{ vars.ZIP_NAME_LIVE }}
+
+  ptu_release:
+    name: Create PTU Release
+    runs-on: ubuntu-latest
+    if: ${{ vars.TRIGGER_PTU_RELEASE }}
+    permissions:
+      contents: write
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v3
+
+      - name: Create Release Zip
+        run: |
+          sudo timedatectl set-timezone Europe/Berlin
+          mkdir release
+          cp "ptu/user.cfg" "release"
+          mkdir -p "release/data/Localization/german_(germany)"
+          cp "ptu/global.ini" "release/data/Localization/german_(germany)/"
+          cd release
+          echo "${{ vars.VERSION_FILE_TEXT_PTU }} $(date '+%d.%m.%y - %H:%M Uhr')" >> Versionstext.txt
+          mv Versionstext.txt Version-$(date "+%d.%m.%y-%H.%M").txt
+          zip -r "../${{ vars.ZIP_NAME_PTU }}" *
+
+      - name:
+        id: date
+        run: echo "date=$(date '+%d.%m.%y')" >> $GITHUB_OUTPUT
+
+      - name: Create Release New
+        uses: ncipollo/release-action@v1
+        with:
+          tag: ${{ steps.date.outputs.date }}-PTU
+          commit: main
+          name: ${{ vars.RELEASE_TITLE_PTU }}
+          body: ${{ vars.RELEASE_BODY_PTU }}
+          artifacts: ${{ vars.ZIP_NAME_PTU }}
+          prerelease: true
