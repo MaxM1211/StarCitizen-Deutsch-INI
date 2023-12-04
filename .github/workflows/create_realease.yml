@@ -23,7 +23,7 @@ jobs:
     outputs:
       date: ${{steps.date.outputs.date}}
       commit_count_live: ${{steps.new_commits_live.outputs.NEW_COMMIT_COUNT_LIVE}}
-      commit_count_ptu: ${{steps.new_commits_live.outputs.NEW_COMMIT_COUNT_PTU}}
+      commit_count_ptu: ${{steps.new_commits_ptu.outputs.NEW_COMMIT_COUNT_PTU}}
     steps:
       - id: date
         run: echo "date=$(date '+%d.%m.%y')" >> $GITHUB_OUTPUT
