@@ -29,6 +29,8 @@ jobs:
         run: echo "date=$(date '+%d.%m.%y')" >> $GITHUB_OUTPUT
       - name: Checkout code
         uses: actions/checkout@v3
+        with:
+          fetch-depth: 0
       - name: Get New Commits on LIVE # counts the commits to live/global.ini during the last 24 hours
         id: new_commits_live
         run: echo "NEW_COMMIT_COUNT_LIVE=$(git log --oneline --since '24 hours ago' -- live/global.ini | wc -l)" >> $GITHUB_OUTPUT
@@ -67,6 +69,14 @@ jobs:
           name: ${{ vars.RELEASE_TITLE_LIVE }}
           body: ${{ vars.RELEASE_BODY_LIVE }}
           artifacts: ${{ vars.ZIP_NAME_LIVE }}
+
+  test:
+    runs-on: ubuntu-latest
+    needs: get_context_info
+    steps:
+      - name: t
+        run: |
+          echo "LIVE: ${{needs.get_context_info.outputs.commit_count_live  }}, PTU: ${{needs.get_context_info.outputs.commit_count_ptu  }}, Date: ${{needs.get_context_info.outputs.date  }}"
 
   ptu_release: # runs only when ptu/global.ini was changed in the last 24 hours
     name: Create PTU Release
