@@ -32,7 +32,7 @@ jobs:
       - name: Get New Commits on LIVE # counts the commits to live/global.ini during the last 24 hours
         id: new_commits_live
         run: echo "NEW_COMMIT_COUNT_LIVE=$(git log --oneline --since '24 hours ago' -- live/global.ini | wc -l)" >> $GITHUB_OUTPUT
-      - name: Get New Commits on PTU # counts the commits to live/global.ini during the last 24 hours
+      - name: Get New Commits on PTU # counts the commits to ptu/global.ini during the last 24 hours
         id: new_commits_ptu
         run: echo "NEW_COMMIT_COUNT_PTU=$(git log --oneline --since '24 hours ago' -- ptu/global.ini | wc -l)" >> $GITHUB_OUTPUT
 
