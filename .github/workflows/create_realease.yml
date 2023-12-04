@@ -44,7 +44,7 @@ jobs:
   ptu_release:
     name: Create PTU Release
     runs-on: ubuntu-latest
-    if: ${{ vars.TRIGGER_PTU_RELEASE }}
+    if: ${{ vars.TRIGGER_PTU_RELEASE }} == "1"
     permissions:
       contents: write
     steps:
