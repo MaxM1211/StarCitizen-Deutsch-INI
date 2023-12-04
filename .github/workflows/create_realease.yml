@@ -12,6 +12,8 @@ jobs:
     runs-on: ubuntu-latest
     permissions:
       contents: write
+    outputs:
+      date: ${{steps.date.outputs.date}}
     steps:
       - name: Checkout code
         uses: actions/checkout@v3
@@ -64,14 +66,10 @@ jobs:
           mv Versionstext.txt Version-$(date "+%d.%m.%y-%H.%M").txt
           zip -r "../${{ vars.ZIP_NAME_PTU }}" *
 
-      - name:
-        id: date
-        run: echo "date=$(date '+%d.%m.%y')" >> $GITHUB_OUTPUT
-
       - name: Create Release New
         uses: ncipollo/release-action@v1
         with:
-          tag: ${{ github.run_number }}-PTU #steps.date.outputs.date
+          tag: ${{ github.run_number }}-PTU #needs.live_release.outputs.date
           commit: main
           name: ${{ vars.RELEASE_TITLE_PTU }}
           body: ${{ vars.RELEASE_BODY_PTU }}
