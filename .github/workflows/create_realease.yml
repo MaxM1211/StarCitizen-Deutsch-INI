@@ -45,6 +45,7 @@ jobs:
     name: Create PTU Release
     runs-on: ubuntu-latest
     if: vars.TRIGGER_PTU_RELEASE
+    needs: live_release
     permissions:
       contents: write
     steps:
@@ -75,4 +76,3 @@ jobs:
           name: ${{ vars.RELEASE_TITLE_PTU }}
           body: ${{ vars.RELEASE_BODY_PTU }}
           artifacts: ${{ vars.ZIP_NAME_PTU }}
-          makeLatest: "latest"
