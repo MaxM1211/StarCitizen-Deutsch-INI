@@ -27,6 +27,8 @@ jobs:
     steps:
       - id: date
         run: echo "date=$(date '+%d.%m.%y')" >> $GITHUB_OUTPUT
+      - name: Checkout code
+        uses: actions/checkout@v3
       - name: Get New Commits # counts the commits to live/global.ini during the last 24 hours
         id: new_commits_live
         run: echo "NEW_COMMIT_COUNT_LIVE=$(git log --oneline --since '24 hours ago' -- live/global.ini | wc -l)" >> $GITHUB_ENV
