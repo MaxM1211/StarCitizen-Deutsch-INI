@@ -100,4 +100,3 @@ jobs:
           body: ${{ vars.RELEASE_BODY_PTU }}
           artifacts: ${{ vars.ZIP_NAME_PTU }}
           makeLatest: "latest"
-          generateReleaseNotes: true
