@@ -60,7 +60,7 @@ jobs:
     runs-on: ubuntu-latest
     concurrency:
       group: releases
-      cancel-in-progress: true
+      cancel-in-progress: false
     needs: get_context_info
     if: needs.get_context_info.outputs.NEW_COMMIT_COUNT_LIVE > 0
     permissions:
@@ -94,7 +94,7 @@ jobs:
     runs-on: ubuntu-latest
     concurrency:
       group: releases
-      cancel-in-progress: true
+      cancel-in-progress: false
     needs: get_context_info
     if: (vars.TRIGGER_PTU_RELEASE == 1 && needs.get_context_info.outputs.NEW_COMMIT_COUNT_PTU > 0)
     permissions:
