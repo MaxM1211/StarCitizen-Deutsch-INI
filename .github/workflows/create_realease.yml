@@ -96,7 +96,7 @@ jobs:
       group: releases
       cancel-in-progress: false
     needs: get_context_info
-    if: (vars.TRIGGER_PTU_RELEASE == 1 && needs.get_context_info.outputs.NEW_COMMIT_COUNT_PTU > 0)
+    if: false && (vars.TRIGGER_PTU_RELEASE == 1 && needs.get_context_info.outputs.NEW_COMMIT_COUNT_PTU > 0)
     permissions:
       contents: write
     steps:
