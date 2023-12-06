@@ -80,7 +80,7 @@ jobs:
       - name: Create New Release For LIVE
         uses: ncipollo/release-action@v1
         with:
-          tag: ${{ needs.get_context_info.outputs.DATE }}-LIVE
+          tag: ${{ github.workflow.run }}-LIVE #needs.get_context_info.outputs.DATE
           commit: main
           name: ${{ needs.get_context_info.outputs.RELEASE_TITLE_LIVE }}
           body: ${{ vars.RELEASE_BODY_LIVE }}
@@ -111,7 +111,7 @@ jobs:
       - name: Create New Release For PTU
         uses: ncipollo/release-action@v1
         with:
-          tag: ${{ needs.get_context_info.outputs.DATE }}-PTU
+          tag: ${{ github.workflow.run }}-PTU #needs.get_context_info.outputs.DATE
           commit: main
           name: ${{ needs.get_context_info.outputs.RELEASE_TITLE_PTU }}
           body: ${{ vars.RELEASE_BODY_PTU }}
