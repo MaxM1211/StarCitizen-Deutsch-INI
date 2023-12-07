@@ -128,7 +128,7 @@ jobs:
     name: Create PTU Release
     runs-on: ubuntu-latest
     needs: [get_context_info, live_release]
-    if: ${{ always() }} && (vars.TRIGGER_PTU_RELEASE == 1 && (needs.get_context_info.outputs.NEW_COMMIT_COUNT_PTU > 0))
+    if: always() && (vars.TRIGGER_PTU_RELEASE == 1 && (needs.get_context_info.outputs.NEW_COMMIT_COUNT_PTU > 0))
     permissions:
       contents: write
     steps:
