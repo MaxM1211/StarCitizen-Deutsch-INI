@@ -13,12 +13,10 @@
 on:
   workflow_dispatch: # used only for testing to trigger the workflow from the GitHub website
     inputs:
-      logLevel:
-        description: 'Log Level'
-        required: true
-        default: 'warning'
-      tags:
-        description: 'Test Scenario Tags'
+      tag:
+        description: "Release Tags"
+        type: string
+
   schedule:
     - cron: "0 3 * * *"
 
@@ -149,7 +147,7 @@ jobs:
       - name: Create Release For PTU
         uses: ncipollo/release-action@v1
         with:
-          tag: ${{ github.run_number }}-PTU
+          tag: ${{ inputs.tags || github.run_number }}-PTU
           commit: main
           name: ${{ needs.get_context_info.outputs.RELEASE_TITLE_PTU }}
           body: ${{ vars.RELEASE_BODY_PTU }}
