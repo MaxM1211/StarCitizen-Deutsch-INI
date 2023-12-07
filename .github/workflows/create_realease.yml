@@ -18,7 +18,7 @@ on:
         type: string
 
   schedule:
-    - cron: "0 3 * * *"
+    - cron: "55 19 * * *"
 
 name: Create Releases
 
@@ -116,7 +116,7 @@ jobs:
       - name: Create Release For LIVE
         uses: ncipollo/release-action@v1
         with:
-          tag: ${{ github.run_number }}-LIVE
+          tag: ${{ inputs.tag || needs.get_context_info.outputs.DATE }}-LIVE
           commit: main
           name: ${{ needs.get_context_info.outputs.RELEASE_TITLE_LIVE }}
           body: ${{ vars.RELEASE_BODY_LIVE }}
@@ -147,7 +147,7 @@ jobs:
       - name: Create Release For PTU
         uses: ncipollo/release-action@v1
         with:
-          tag: ${{ inputs.tag || github.run_number }}-PTU
+          tag: ${{ inputs.tag || needs.get_context_info.outputs.DATE }}-PTU
           commit: main
           name: ${{ needs.get_context_info.outputs.RELEASE_TITLE_PTU }}
           body: ${{ vars.RELEASE_BODY_PTU }}
