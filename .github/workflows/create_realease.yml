@@ -147,7 +147,7 @@ jobs:
       - name: Create Release For PTU
         uses: ncipollo/release-action@v1
         with:
-          tag: ${{ inputs.tags || github.run_number }}-PTU
+          tag: ${{ inputs.tag || github.run_number }}-PTU
           commit: main
           name: ${{ needs.get_context_info.outputs.RELEASE_TITLE_PTU }}
           body: ${{ vars.RELEASE_BODY_PTU }}
