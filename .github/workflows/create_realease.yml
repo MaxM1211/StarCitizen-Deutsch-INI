@@ -17,8 +17,8 @@ on:
       tag:
         description: "Release Tag"
         type: string
-  schedule:
-    - cron: "0 3 * * *"
+  # schedule:
+  #   - cron: "0 3 * * *"
 jobs:
   get_context_info:
     name: Get Context Info
