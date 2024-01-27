@@ -51,5 +51,24 @@ removeFirstLine(filename_eng)
 removeFirstLine(filename_ger)
 
 if len(not_found_keys):
+    import os
+    import uuid
+
+    def set_output(name, value):
+        with open(os.environ["GITHUB_OUTPUT"], "a") as fh:
+            print(f"{name}={value}", file=fh)
+
+    def set_multiline_output(name, value):
+        with open(os.environ["GITHUB_OUTPUT"], "a") as fh:
+            delimiter = uuid.uuid1()
+            print(f"{name}<<{delimiter}", file=fh)
+            print(value, file=fh)
+            print(delimiter, file=fh)
+
     print(json.dumps(not_found_keys, indent=4))
+    try:
+        set_output("test_report", json.dumps(not_found_keys, indent=4))
+        # set_multiline_output("test_report",json.dumps(not_found_keys, indent=4))
+    except:
+        pass
     exit(1)
