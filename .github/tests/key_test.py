@@ -52,4 +52,10 @@ removeFirstLine(filename_ger)
 
 if len(not_found_keys):
     print(json.dumps(not_found_keys, indent=4))
+    print("#Test1")
+    print("---")
+    print("* Test")
+    print("* Test2")
+    print("* Test3")
+
     exit(1)
