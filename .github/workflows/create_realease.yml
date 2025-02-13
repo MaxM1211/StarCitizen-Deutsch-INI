@@ -69,7 +69,7 @@ jobs:
 
       - name: Get Month
         id: month
-        run: echo "MONTH=$(date '+%B')" >> $GITHUB_OUTPUT
+        run: echo "MONTH=$(LC_ALL="de_DE.UTF-8" date '+%B')" >> $GITHUB_OUTPUT
 
       - name: Count New Commits On PTU # counts the commits to ptu/global.ini during the last 14 days
         id: new_commits_ptu
