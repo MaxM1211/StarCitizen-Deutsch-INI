@@ -1,61 +1,70 @@
-import json
-from configparser import ConfigParser
-
-filename_eng = "en/live/global.ini"
-filename_ger = "live/global.ini"
+from configparser import ConfigParser, Error as configparserError, DuplicateOptionError
+import sys
 
 
-def addLine(filename, line):
-    with open(filename, encoding="utf_8_sig", mode="r+") as file:
-        file_data = file.read()
-        file.seek(0, 0)
-        file.write(line + ("\n") + file_data)
+def parse_error(file_path: str, error: configparserError):
+    """
+    Parses an error and generates an error message. Stops the execution with error.
+
+    :param file_path: Path to a (ini) file (just for better output)
+    :param error: The error thrown by the ConfigParser
+    """
+    if type(error) == DuplicateOptionError:
+        sys.exit(
+            f"Fehler in '{file_path}': Der Key '{error.args[1]}' in Zeile {error.args[3]-1} exisitert bereits."
+        )
+    else:
+        sys.exit(f"Fehler in '{file_path}': '{error.message}'")
 
 
-def removeFirstLine(filename):
-    with open(filename, encoding="utf_8_sig", mode="r+") as file:
-        lines = file.readlines()
-        file.seek(0, 0)
-        file.truncate()
-        file.writelines(lines[1:])
+def keys_in_second_ini(first_file, second_file):
+    """
+    :param first_file: The path to the first ini file.
+    :param second_file: The path to the second ini file.
+    :return: True if all keys in the first ini file are present in the second ini file, False otherwise.
+    """
+    # Parse the two ini files
+    try:
+        first_ini = ConfigParser(allow_no_value=True, delimiters=("="))
+        with open(first_file, "r", encoding="UTF-8-SIG") as file:
+            first_ini.read_string("[DEFAULT]\n" + file.read())
+    except configparserError as e:
+        parse_error(first_file, e)
+
+    try:
+        second_ini = ConfigParser(allow_no_value=True, delimiters=("="))
+        with open(second_file, "r", encoding="UTF-8-SIG") as file:
+            second_ini.read_string("[DEFAULT]\n" + file.read())
+    except configparserError as e:
+        parse_error(second_file, e)
+
+    # Check that all keys in the first ini are present in the second
+    for key in first_ini.defaults():
+        if key not in second_ini.defaults():
+            print(f"Key '{key}' missing from {second_file}.")
+            return False
+    return True
 
 
-line = "[DEFAULT]"
-file_data = ""
+# Files to be checked
+eng_live_file = ".github/en/live/global.ini"
+deu_live_file = "live/global.ini"
+# eng_ptu_file = ".github/en/ptu/global.ini"
+# deu_ptu_file = "ptu/global.ini"
 
-addLine(filename=filename_eng, line=line)
-addLine(filename=filename_ger, line=line)
+exit_code = 0
 
-config_eng = ConfigParser(
-    allow_no_value=True, comment_prefixes=None, delimiters=("="), interpolation=None
-)
-config_ger = ConfigParser(
-    allow_no_value=True, comment_prefixes=None, delimiters=("="), interpolation=None
-)
-config_eng.read(filename_eng, "utf_8_sig")
-config_eng_section = config_eng["DEFAULT"]
+# Perform the check
+if keys_in_second_ini(eng_live_file, deu_live_file):
+    print("All keys in LIVE are present.")
+else:
+    print("Some keys in LIVE are missing.")
+    exit_code = 1
 
-config_ger.read(filename_ger, "utf_8_sig")
-config_ger_section = config_ger["DEFAULT"]
+# if keys_in_second_ini(eng_ptu_file, deu_ptu_file):
+#     print("All keys in PTU are present.")
+# else:
+#     print("Some keys in PTU are missing.")
+#     exit_code = 1
 
-not_found_keys = {}
-
-line = 1
-for key in config_eng_section.keys():
-    value = config_ger_section.get(key)
-    if value == None:
-        not_found_keys[line] = key
-    line += 1
-
-removeFirstLine(filename_eng)
-removeFirstLine(filename_ger)
-
-if len(not_found_keys):
-    print(json.dumps(not_found_keys, indent=4))
-    print("#Test1")
-    print("---")
-    print("* Test")
-    print("* Test2")
-    print("* Test3")
-
-    exit(1)
+exit(exit_code)

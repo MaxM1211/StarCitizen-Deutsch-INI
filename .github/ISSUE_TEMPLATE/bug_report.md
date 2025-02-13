@@ -1,13 +1,13 @@
 ---
 name: Fehlermeldung
-about: Erstelle eine Fehlermeldung über eine falsche oder verbeserungswürdige Übersetzung.
+about: Erstelle eine Fehlermeldung über eine falsche oder verbesserungswürdige Übersetzung.
 title: ""
 labels: Fehler
 assignees: ""
 ---
 
 ### Wo tritt der Fehler auf?
-Zum Beispiel: ASOP-Terminal, Mobiglas, Interaktionen
+Zum Beispiel: ASOP-Terminal, mobiglas, Interaktionen
 
 ### Beschreibe den Fehler
 Wie lautet die aktuelle Übersetzung?
@@ -21,7 +21,6 @@ Wenn möglich, füge Screenshots ein, damit wir den Fehler direkt sehen und eino
 ### Version
 - Channel: [z.B. LIVE, PTU, EPTU, HOTFIX, TECH-PREVIEW]
 - Version: [z.B. 3.21.1]
-- Build: [z.B. 8854374]
 
 ### Zusätzlicher Kontext
-Jegliche weitere Informationen die uns helfen können den Kontext zu verstehen.
+Jegliche weitere Informationen, die uns helfen können, den Kontext zu verstehen.
