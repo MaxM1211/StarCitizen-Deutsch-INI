@@ -94,7 +94,7 @@ jobs:
           then
           echo "RELEASE_TITLE_PTU=${{ vars.RELEASE_TITLE_PTU }} (${{ steps.month.outputs.MONTH }})" >> $GITHUB_OUTPUT
           else
-          echo "RELEASE_TITLE_PTU=$(git log -1 --pretty=%s -- ptu/global.ini | cut -s -d'|' -f1 | rev | cut -c 2- | rev) PTU (${{ steps.month.outputs.MONTH }})" >> $GITHUB_OUTPUT
+          echo "RELEASE_TITLE_PTU=$(git log -1 --pretty=%s -- ptu/global.ini | cut -s -d'|' -f1 | rev | cut -c 2- | rev | cut -s -d' ' -f1) PTU (${{ steps.month.outputs.MONTH }})" >> $GITHUB_OUTPUT
           fi
       - name: Create Release Title For LIVE
         id: title_live # creates a title for the release that shows the version number used in the title of the last commit that changed the live/global.ini
@@ -104,7 +104,7 @@ jobs:
           then
           echo "RELEASE_TITLE_LIVE=${{ vars.RELEASE_TITLE_LIVE }} (${{ steps.month.outputs.MONTH }})" >> $GITHUB_OUTPUT
           else
-          echo "RELEASE_TITLE_LIVE=$(git log -1 --pretty=%s -- live/global.ini | cut -s -d'|' -f1 | rev | cut -c 2- | rev ) LIVE (${{ steps.month.outputs.MONTH }})" >> $GITHUB_OUTPUT
+          echo "RELEASE_TITLE_LIVE=$(git log -1 --pretty=%s -- live/global.ini | cut -s -d'|' -f1 | rev | cut -c 2- | rev | cut -s -d' ' -f1) LIVE (${{ steps.month.outputs.MONTH }})" >> $GITHUB_OUTPUT
           fi
 
       - name: Get Last Tag On PTU
