@@ -169,7 +169,7 @@ jobs:
     name: Create PTU Release
     runs-on: ubuntu-latest
     needs: get_context_info
-    if: (vars.TRIGGER_PTU_RELEASE == 1) && (((github.event_name == 'shedule') && (needs.get_context_info.outputs.NEW_COMMIT_COUNT_PTU > 0)) || ((github.event_name == 'push') && (needs.get_context_info.outputs.VERSION_CHANGED_PTU == 'true')) || (github.event_name == 'workflow_dispatch'))
+    if: (vars.TRIGGER_PTU_RELEASE == 1) && (((github.event_name == 'schedule') && (needs.get_context_info.outputs.NEW_COMMIT_COUNT_PTU > 0)) || ((github.event_name == 'push') && (needs.get_context_info.outputs.VERSION_CHANGED_PTU == 'true')) || (github.event_name == 'workflow_dispatch'))
     permissions:
       contents: write
     steps:
@@ -203,7 +203,7 @@ jobs:
     name: Create LIVE Release
     runs-on: ubuntu-latest
     needs: [get_context_info, ptu_release]
-    if: always() && (((github.event_name == 'shedule') && (needs.get_context_info.outputs.NEW_COMMIT_COUNT_LIVE > 0)) || ((github.event_name == 'push') && (needs.get_context_info.outputs.VERSION_CHANGED_LIVE == 'true')) || (github.event_name == 'workflow_dispatch'))
+    if: always() && (((github.event_name == 'schedule') && (needs.get_context_info.outputs.NEW_COMMIT_COUNT_LIVE > 0)) || ((github.event_name == 'push') && (needs.get_context_info.outputs.VERSION_CHANGED_LIVE == 'true')) || (github.event_name == 'workflow_dispatch'))
     permissions:
       contents: write
     steps:
